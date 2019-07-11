@@ -1,37 +1,39 @@
 ﻿Imports System
+Imports System.Collections.ObjectModel
 Imports System.Windows
+Imports DevExpress.Xpf.Core
 Imports DevExpress.Xpf.PivotGrid
-Imports HowToEditCell.NwindDataSetTableAdapters
 
 Namespace HowToEditCell
-    ''' <summary>
-    ''' Interaction logic for MainWindow.xaml
-    ''' </summary>
-    Partial Public Class MainWindow
-        Inherits Window
+	''' <summary>
+	''' Interaction logic for MainWindow.xaml
+	''' </summary>
+	Partial Public Class MainWindow
+		Inherits ThemedWindow
 
-        Private salesPersonDataTable As New NwindDataSet.SalesPersonDataTable()
-        Private salesPersonDataAdapter As New SalesPersonTableAdapter()
+		Public Property OrderSourceList() As ObservableCollection(Of MyOrderRow)
 
-        Public Sub New()
-            InitializeComponent()
-            pivotGridControl1.DataSource = salesPersonDataTable
-        End Sub
+		Public Sub New()
+			InitializeComponent()
+		End Sub
 
-        Private Sub Window_Loaded(ByVal sender As Object, ByVal e As RoutedEventArgs)
-            salesPersonDataAdapter.Fill(salesPersonDataTable)
-        End Sub
+		Private Sub Window_Loaded(ByVal sender As Object, ByVal e As RoutedEventArgs)
+			OrderSourceList = DatabaseHelper.CreateData()
+			pivotGridControl1.DataSource = OrderSourceList
+			pivotGridControl1.BestFit()
+		End Sub
 
-        Private Sub pivotGridControl1_OnCellEdit(ByVal sender As DependencyObject, ByVal agrs As PivotCellEditEventArgs)
-            Dim pivotGrid As PivotGridControl = CType(sender, PivotGridControl)
-            Dim fieldExtendedPrice As PivotGridField = pivotGrid.Fields("Extended Price")
-            Dim ds As PivotDrillDownDataSource = agrs.CreateDrillDownDataSource()
-            Dim difference As Decimal = agrs.NewValue - agrs.OldValue
-            Dim factor As Decimal = If(difference = agrs.NewValue, (difference / ds.RowCount), (difference / agrs.OldValue))
-            For i As Integer = 0 To ds.RowCount - 1
-                Dim value As Decimal = Convert.ToDecimal(ds(i)(fieldExtendedPrice))
-                ds(i)(fieldExtendedPrice) = If(value = 0D, factor, value * (1D + factor))
-            Next i
-        End Sub
-    End Class
+		Private Sub pivotGridControl1_OnCellEdit(ByVal sender As DependencyObject, ByVal args As PivotCellEditEventArgs)
+			Dim pivotGrid As PivotGridControl = CType(sender, PivotGridControl)
+			Dim fieldExtendedPrice As PivotGridField = pivotGrid.Fields("ExtendedPrice")
+			Dim ds As PivotDrillDownDataSource = args.CreateDrillDownDataSource()
+			Dim difference As Decimal = args.NewValue - args.OldValue
+			Dim factor As Decimal = If(difference = args.NewValue, (difference / ds.RowCount), (difference / args.OldValue))
+			For i As Integer = 0 To ds.RowCount - 1
+				Dim value As Decimal = Convert.ToDecimal(ds(i)(fieldExtendedPrice))
+				Dim newValue As Decimal = If(value = 0D, factor, value * (1D + factor))
+				ds.SetValue(i, fieldExtendedPrice, newValue)
+			Next i
+		End Sub
+	End Class
 End Namespace

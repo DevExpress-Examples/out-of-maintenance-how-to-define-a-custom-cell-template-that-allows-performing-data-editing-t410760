@@ -1,35 +1,37 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.PivotGrid;
-using HowToEditCell.NwindDataSetTableAdapters;
 
 namespace HowToEditCell {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window {
+	public partial class MainWindow : ThemedWindow {
 
-		NwindDataSet.SalesPersonDataTable salesPersonDataTable = new NwindDataSet.SalesPersonDataTable();
-		SalesPersonTableAdapter salesPersonDataAdapter = new SalesPersonTableAdapter();
+        public ObservableCollection<MyOrderRow> OrderSourceList { get; set; }
 
-		public MainWindow() {
+        public MainWindow() {
 			InitializeComponent();
-			pivotGridControl1.DataSource = salesPersonDataTable;
 		}
 
 		void Window_Loaded(object sender, RoutedEventArgs e) {
-			salesPersonDataAdapter.Fill(salesPersonDataTable);
-		}
+            OrderSourceList = DatabaseHelper.CreateData();
+            pivotGridControl1.DataSource = OrderSourceList;
+            pivotGridControl1.BestFit();
+        }
 
-		void pivotGridControl1_OnCellEdit(DependencyObject sender, PivotCellEditEventArgs agrs) {
+		void pivotGridControl1_OnCellEdit(DependencyObject sender, PivotCellEditEventArgs args) {
 			PivotGridControl pivotGrid = (PivotGridControl)sender;
-			PivotGridField fieldExtendedPrice = pivotGrid.Fields["Extended Price"];
-			PivotDrillDownDataSource ds = agrs.CreateDrillDownDataSource();
-			decimal difference = agrs.NewValue - agrs.OldValue;
-			decimal factor = (difference == agrs.NewValue) ? (difference / ds.RowCount) : (difference / agrs.OldValue);
+			PivotGridField fieldExtendedPrice = pivotGrid.Fields["ExtendedPrice"];
+			PivotDrillDownDataSource ds = args.CreateDrillDownDataSource();
+			decimal difference = args.NewValue - args.OldValue;
+			decimal factor = (difference == args.NewValue) ? (difference / ds.RowCount) : (difference / args.OldValue);
 			for(int i = 0; i < ds.RowCount; i++) {
 				decimal value = Convert.ToDecimal(ds[i][fieldExtendedPrice]);
-				ds[i][fieldExtendedPrice] = (value == 0m) ? factor : value * (1m + factor);
+                decimal newValue = (value == 0m) ? factor : value * (1m + factor);
+                ds.SetValue(i, fieldExtendedPrice, newValue);
 			}
 		}
 	}

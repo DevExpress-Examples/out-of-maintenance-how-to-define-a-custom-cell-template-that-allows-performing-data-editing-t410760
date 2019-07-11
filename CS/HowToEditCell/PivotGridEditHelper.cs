@@ -137,8 +137,11 @@ namespace HowToEditCell {
 			decimal oldValue;
 
 			if(edit.EditValue != null && decimal.TryParse(edit.EditValue.ToString(), out newValue)) {
-				if(item.Value == null || !decimal.TryParse(item.Value.ToString(), out oldValue))
-					return;
+                if (item.Value == null || !decimal.TryParse(item.Value.ToString(), out oldValue))
+                {
+                    edit.EditValue = null;
+                    return;
+                }
 
 				if(pivotGrid == null)
 					return;
