@@ -14,14 +14,17 @@
     <Grid>
         <dxpg:PivotGridControl
             x:Name="pivotGridControl1"
+            DataProcessingEngine="Optimized"
             local:PivotGridEditHelper.OnCellEdit="pivotGridControl1_OnCellEdit"
             local:PivotGridEditHelper.UseHelper="{Binding RelativeSource={RelativeSource Self}}">
             <dxpg:PivotGridControl.Fields>
                 <dxpg:PivotGridField
                     x:Name="fieldSales"
                     Area="DataArea"
-                    Caption="Product Sales"
-                    FieldName="ExtendedPrice">
+                    Caption="Product Sales">
+                    <dxpg:PivotGridField.DataBinding>
+                        <dxpg:DataSourceColumnBinding ColumnName="ExtendedPrice"/>
+                    </dxpg:PivotGridField.DataBinding>
                     <dxpg:PivotGridField.CellTemplate>
                         <DataTemplate>
                             <dxe:TextEdit
@@ -51,28 +54,43 @@
                     x:Name="fieldYear"
                     AllowFilter="False"
                     Area="ColumnArea"
-                    Caption="Year"
-                    FieldName="OrderDate"
-                    GroupInterval="DateYear" />
+                    Caption="Year">
+                    <dxpg:PivotGridField.DataBinding>
+                        <dxpg:DataSourceColumnBinding ColumnName="OrderDate" GroupInterval="DateYear"/>
+                    </dxpg:PivotGridField.DataBinding>
+
+                </dxpg:PivotGridField>
                 <dxpg:PivotGridField
                     x:Name="fieldCategoryName"
                     Area="RowArea"
                     AreaIndex="0"
-                    Caption="Category"
-                    FieldName="CategoryName" />
+                    Caption="Category">
+                    <dxpg:PivotGridField.DataBinding>
+                        <dxpg:DataSourceColumnBinding ColumnName="CategoryName"/>
+                    </dxpg:PivotGridField.DataBinding>
+                </dxpg:PivotGridField>
                 <dxpg:PivotGridField
                     x:Name="fieldProductName"
                     Area="RowArea"
                     AreaIndex="1"
-                    Caption="Product"
-                    FieldName="ProductName" />
+                    Caption="Product">
+                    <dxpg:PivotGridField.DataBinding>
+                        <dxpg:DataSourceColumnBinding ColumnName="ProductName"/>
+                    </dxpg:PivotGridField.DataBinding>
+                </dxpg:PivotGridField>
                 <dxpg:PivotGridField
                     Area="DataArea"
                     Caption="Percent Of Column"
                     CellFormat="p"
-                    FieldName="ExtendedPrice"
-                    Name="fieldExtendedPrice2"
-                    SummaryDisplayType="PercentOfColumn" />
+                    Name="fieldExtendedPrice2">
+                    <dxpg:PivotGridField.DataBinding>
+                        <dxpg:PercentOfTotalBinding PartitioningCriteria="ColumnValue">
+                            <dxpg:PercentOfTotalBinding.Source>
+                                <dxpg:DataSourceColumnBinding ColumnName="ExtendedPrice"/>
+                            </dxpg:PercentOfTotalBinding.Source>
+                        </dxpg:PercentOfTotalBinding>
+                    </dxpg:PivotGridField.DataBinding>
+                </dxpg:PivotGridField>
             </dxpg:PivotGridControl.Fields>
         </dxpg:PivotGridControl>
     </Grid>

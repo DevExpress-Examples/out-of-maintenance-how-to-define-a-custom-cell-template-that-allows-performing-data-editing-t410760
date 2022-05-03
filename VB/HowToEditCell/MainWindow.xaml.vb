@@ -25,7 +25,7 @@ Namespace HowToEditCell
 
 		Private Sub pivotGridControl1_OnCellEdit(ByVal sender As DependencyObject, ByVal args As PivotCellEditEventArgs)
 			Dim pivotGrid As PivotGridControl = CType(sender, PivotGridControl)
-			Dim fieldExtendedPrice As PivotGridField = pivotGrid.Fields("ExtendedPrice")
+			Dim fieldExtendedPrice As PivotGridField = pivotGrid.Fields.GetFieldByName("fieldSales")
 			Dim ds As PivotDrillDownDataSource = args.CreateDrillDownDataSource()
 			Dim difference As Decimal = args.NewValue - args.OldValue
 			Dim factor As Decimal = If(difference = args.NewValue, (difference / ds.RowCount), (difference / args.OldValue))

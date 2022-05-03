@@ -24,7 +24,7 @@ namespace HowToEditCell {
 
 		void pivotGridControl1_OnCellEdit(DependencyObject sender, PivotCellEditEventArgs args) {
 			PivotGridControl pivotGrid = (PivotGridControl)sender;
-			PivotGridField fieldExtendedPrice = pivotGrid.Fields["ExtendedPrice"];
+			PivotGridField fieldExtendedPrice = pivotGrid.Fields.GetFieldByName("fieldSales");
 			PivotDrillDownDataSource ds = args.CreateDrillDownDataSource();
 			decimal difference = args.NewValue - args.OldValue;
 			decimal factor = (difference == args.NewValue) ? (difference / ds.RowCount) : (difference / args.OldValue);
