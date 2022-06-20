@@ -10,7 +10,7 @@ This example implements the base set of features. It does not allow to go to the
 
 ![screenshot](/images/screenshot.png)
 
-The **PivotGridEditHelper** class implements the in-place cell editor. When editing is finished, the editor calls the _pivotGridControl1_OnCellEdit_ method. This method retrieves the underlying data for the edited cell and adjusts them so that their sum equals the new value entered in the cell.
+The `PivotGridEditHelper` class implements the in-place cell editor. When editing is finished, the editor calls the _pivotGridControl1_OnCellEdit_ method. This method retrieves the underlying data for the edited cell and adjusts them so that their sum equals the new value entered in the cell.
 
 ## Files to Look At
 
