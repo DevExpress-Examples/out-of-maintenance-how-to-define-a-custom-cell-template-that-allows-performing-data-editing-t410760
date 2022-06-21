@@ -6,7 +6,8 @@
 
 The Pivot Grid control does not support the data editing functionality out of the box because it displays aggregated data. This example demonstrates how to implement a custom [CellTemplate](https://docs.devexpress.com/WPF/DevExpress.Xpf.PivotGrid.PivotGridField.CellTemplate) with the in-place editing functionality. 
 
-This example implements the base set of features. It does not allow to go to the next cell by pressing the tab or arrow keys.
+This example implements the base set of features. It does not allow users to go to the next cell by pressing the tab or arrow key.
+
 
 ![screenshot](/images/screenshot.png)
 
