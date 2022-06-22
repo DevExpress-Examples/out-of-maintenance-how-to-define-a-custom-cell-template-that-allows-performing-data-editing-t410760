@@ -4,14 +4,14 @@
 <!-- default badges end -->
 # Pivot Grid for WPF - How to Edit a Cell with the Cell Editing Template
 
-The Pivot Grid control does not support the data editing functionality out of the box because it displays aggregated data. This example demonstrates how to implement a custom [CellTemplate](https://docs.devexpress.com/WPF/DevExpress.Xpf.PivotGrid.PivotGridField.CellTemplate) with the in-place editing functionality. 
+The Pivot Grid control does not support data editing functionality out of the box because it displays aggregated data. This example demonstrates how to implement a custom [CellTemplate](https://docs.devexpress.com/WPF/DevExpress.Xpf.PivotGrid.PivotGridField.CellTemplate) with in-place editing functionality.
 
 This example implements the base set of features. It does not allow users to go to the next cell by pressing the tab or arrow key.
 
 
 ![screenshot](/images/screenshot.png)
 
-The `PivotGridEditHelper` class implements the in-place cell editor. When editing is finished, the editor calls the `pivotGridControl1_OnCellEdit` method. This method retrieves the underlying data for the edited cell and adjusts them so that their sum equals the new value entered in the cell.
+The `PivotGridEditHelper` class implements the in-place cell editor. When editing is finished, the editor calls the `pivotGridControl1_OnCellEdit` method. This method retrieves the underlying data for the edited cell and recalculates cell values related to the edited cell (for example, Total and Grand Total values).
 
 ## Files to Look At
 
