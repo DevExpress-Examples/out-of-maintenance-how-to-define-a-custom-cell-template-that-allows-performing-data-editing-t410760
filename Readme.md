@@ -8,7 +8,6 @@ The Pivot Grid control does not support data editing functionality out of the bo
 
 This example implements the base set of features. It does not allow users to go to the next cell by pressing the tab or arrow key.
 
-
 ![screenshot](/images/screenshot.png)
 
 The `PivotGridEditHelper` class implements the in-place cell editor. When editing is finished, the editor calls the `pivotGridControl1_OnCellEdit` method. This method retrieves the underlying data for the edited cell and recalculates cell values related to the edited cell (for example, Total and Grand Total values).
